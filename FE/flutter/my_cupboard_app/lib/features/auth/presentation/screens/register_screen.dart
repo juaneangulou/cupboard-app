@@ -16,13 +16,14 @@ class RegisterScreen extends StatelessWidget {
               // Icon Banner
               const Icon( 
                 Icons.production_quantity_limits_rounded, 
-                color: Colors.white,
+                color: Color.fromARGB(255, 20, 20, 20),
                 size: 100,
               ),
               const SizedBox( height: 80 ),
 
               Container(
                 width: double.infinity,
+                color: Color.fromARGB(255, 20, 20, 20),
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(100)),
                 ),
