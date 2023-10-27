@@ -23,7 +23,7 @@ class RegisterScreen extends StatelessWidget {
 
               Container(
                 width: double.infinity,
-                color: Color.fromARGB(255, 20, 20, 20),
+                
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(100)),
                 ),

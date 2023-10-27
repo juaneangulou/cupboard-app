@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_cupboard_app/config/app_router.dart';
+import 'package:my_cupboard_app/config/config.dart';
 
-void main() {
+void main() async {
+  await Environment.initEnvironment();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -12,6 +13,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print(Environment.apiUrl);
     return MaterialApp.router(
       title: 'Cupboard App',
       theme: ThemeData(
