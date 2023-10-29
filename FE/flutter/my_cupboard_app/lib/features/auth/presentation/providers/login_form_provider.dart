@@ -1,10 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
+import 'package:my_cupboard_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:my_cupboard_app/features/shared/shared.dart';
 
 final loginFormProvider =
-    StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>(
-        (ref) => LoginFormNotifier());
+    StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
+ final loginUserCallback = ref.watch(authProvider.notifier).loginUser;
+
+
+  return LoginFormNotifier(
+    loginUserCallback:loginUserCallback
+  );
+});
+
 
 class LoginFormState {
   final bool isPosting;
@@ -43,7 +51,13 @@ class LoginFormState {
 }
 
 class LoginFormNotifier extends StateNotifier<LoginFormState> {
-  LoginFormNotifier() : super(LoginFormState());
+   final Function(String, String) loginUserCallback;
+
+  LoginFormNotifier({
+    required this.loginUserCallback,
+  }): super( LoginFormState() );
+  
+
 
   onEmailChanged(String value) {
     final newEmail = Email.dirty(value);
@@ -58,11 +72,16 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
         isValid: Formz.validate([newPassword, state.email]));
   }
 
-  onSubmitted() {
-    _touchEveryField();
-    if (!state.isValid) {
-      return;
-    }
+  onSubmitted() async {
+      _touchEveryField();
+
+    if ( !state.isValid ) return;
+
+    state = state.copyWith(isPosting: true);
+
+    await loginUserCallback( state.email.value, state.password.value );
+
+    state = state.copyWith(isPosting: false);
   }
 
   _touchEveryField() {

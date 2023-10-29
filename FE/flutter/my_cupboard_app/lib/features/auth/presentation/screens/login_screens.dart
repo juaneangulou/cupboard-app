@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:my_cupboard_app/features/auth/presentation/providers/login_form_provider.dart';
 import 'package:my_cupboard_app/features/shared/widgets/custom_filled_button.dart';
 import 'package:my_cupboard_app/features/shared/widgets/custom_text_form_field.dart';
+import '../providers/auth_provider.dart';
 
 
 
@@ -66,7 +67,11 @@ class _LoginForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final loginForm = ref.watch(loginFormProvider);
+    ref.listen(authProvider, (previous, next) { 
+        if(next.errorMessage!.isEmpty) return;
+        showSnackbar(context, next.errorMessage!);
 
+    });
     // ref.listen(authProvider, (previous, next) {
     //   if ( next.errorMessage.isEmpty ) return;
     //   showSnackbar( context, next.errorMessage );

@@ -69,8 +69,14 @@ public class UserService : IUserService
                     expires: DateTime.Now.AddMinutes(15),
                     signingCredentials: creds
                 );
-
+                var roles=await _userManager.GetRolesAsync(user);
                 var tokenresult = new JwtSecurityTokenHandler().WriteToken(token);
+                response.FirstName = user.FirstName;
+                response.SecondName = user.SecondName;
+                response.FirstLastName = user.FirstLastName;
+                response.SecondLastName = user.SecondLastName;
+                response.Email = user.Email;
+                response.Roles = roles?.ToArray() ?? new string[] { };
                 response.Token = tokenresult;
                 response.Expiration = token.ValidTo;
                 response.IsSuccess = true;
