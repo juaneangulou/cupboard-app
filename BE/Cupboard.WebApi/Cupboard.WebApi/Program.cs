@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services.AddControllers().AddFluentValidation((fv)=> { fv.ImplicitlyValidateChildProperties = true; fv.AutomaticValidationEnabled = true; fv.DisableDataAnnotationsValidation = true; }) ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

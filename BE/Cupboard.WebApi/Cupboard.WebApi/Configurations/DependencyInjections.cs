@@ -1,7 +1,10 @@
-﻿using Cupboard.WebApi.Repositories.Contracts;
+﻿using Cupboard.WebApi.Configurations.Validators;
+using Cupboard.WebApi.Dtos;
+using Cupboard.WebApi.Repositories.Contracts;
 using Cupboard.WebApi.Repositories.Implementations;
 using Cupboard.WebApi.Services.Contracts;
 using Cupboard.WebApi.Services.Implementations;
+using FluentValidation;
 
 namespace Cupboard.WebApi.Configurations;
 
@@ -19,7 +22,12 @@ public static class DependencyInjections
         services.AddScoped<IUserService, UserService> ();
         //services.AddScoped<IDependentService, DependentService> ();
         #endregion
-       
+
+        #region Validators Injection
+
+        services.AddTransient<IValidator<RegisterRequetDto>, RegisterRequetDtoValidator>();
+        #endregion
+
         return services;
     }
 }

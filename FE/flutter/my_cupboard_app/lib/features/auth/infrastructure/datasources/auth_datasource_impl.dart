@@ -35,8 +35,27 @@ class AuthDatasourceImpl extends AuthDatasources {
   }
 
   @override
-  Future<User?> checkStatus(String token) {
-    // TODO: implement checkStatus
-    throw UnimplementedError();
+  Future<User?> checkStatus(String token) async {
+    try {
+      final response = dio.post('/api/auth/refresh-token', options: Options(
+        headers: {
+          'Authorization': 'Bearer $token'
+        }
+      ));
+      final responseFull = (await response).data;
+      final user = UserMapper.userJsonToEntity(responseFull);
+      return user;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw CustomError(
+            e.response?.data['message'] ?? 'Credenciales incorrectas');
+      }
+      if (e.type == DioExceptionType.connectionTimeout) {
+        throw CustomError('Revisar conexión a internet');
+      }
+      throw Exception();
+    } catch (e) {
+      throw Exception();
+    }
   }
 }
