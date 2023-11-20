@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_cupboard_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:my_cupboard_app/features/shared/widgets/custom_filled_button.dart';
 
-class SideMenu extends StatefulWidget {
+class SideMenu extends ConsumerStatefulWidget {
 
   final GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -12,10 +14,10 @@ class SideMenu extends StatefulWidget {
   });
 
   @override
-  State<SideMenu> createState() => _SideMenuState();
+  SideMenuState createState() => SideMenuState();
 }
 
-class _SideMenuState extends State<SideMenu> {
+class SideMenuState extends ConsumerState<SideMenu> {
 
   int navDrawerIndex = 0;
 
@@ -49,12 +51,27 @@ class _SideMenuState extends State<SideMenu> {
 
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 16, 10),
-          child: Text('Tony Stark', style: textStyles.titleSmall ),
+          child:  Consumer(
+                builder: (context, ref, child) {
+                  final userInfo = ref.watch(authProvider).userInfo;
+                  String fullName =
+                      '${userInfo?.firstName ?? ''} ${userInfo?.lastName ?? ''}'
+                          .trim();
+                  return Text(fullName.isNotEmpty ? fullName : 'No name');
+                },
+              ),
         ),
 
         const NavigationDrawerDestination(
             icon: Icon( Icons.home_outlined ), 
-            label: Text( 'Productos' ),
+            label: Text( 'Home' ),
+                         
+        ),
+
+        const NavigationDrawerDestination(
+            icon: Icon( Icons.person_outline ), 
+            label: Text( 'My Dependents' ),
+                         
         ),
 
 
@@ -72,7 +89,9 @@ class _SideMenuState extends State<SideMenu> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: CustomFilledButton(
-            onPressed: () {},
+            onPressed: () {
+              ref.read(authProvider.notifier).logout('');
+            },
             text: 'Cerrar sesión'
           ),
         ),

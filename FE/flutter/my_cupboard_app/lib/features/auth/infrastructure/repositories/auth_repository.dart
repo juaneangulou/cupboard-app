@@ -1,10 +1,12 @@
 import 'package:my_cupboard_app/features/auth/domain/domain.dart';
 import 'package:my_cupboard_app/features/auth/infrastructure/datasources/auth_datasource_impl.dart';
+import 'package:my_cupboard_app/features/user/domain/entities/user-info.dart';
 
-class AuthRepositoryImpl extends AuthRepository{
+class AuthRepositoryImpl extends AuthRepository {
   final AuthDatasources _datasources;
 
-  AuthRepositoryImpl({AuthDatasources? datasources}) : _datasources = datasources?? AuthDatasourceImpl();
+  AuthRepositoryImpl({AuthDatasources? datasources})
+      : _datasources = datasources ?? AuthDatasourceImpl();
 
   @override
   Future<User?> login(String email, String password) {
@@ -15,10 +17,14 @@ class AuthRepositoryImpl extends AuthRepository{
   Future<User?> register(String email, String password) {
     return _datasources.register(email, password);
   }
-  
+
   @override
   Future<User?> checkStatus(String token) {
     return _datasources.checkStatus(token);
   }
-  
+
+  @override
+  Future<UserInfo?> getUserInfoAuth(String token) {
+    return _datasources.getUserInfoAuth(token);
+  }
 }

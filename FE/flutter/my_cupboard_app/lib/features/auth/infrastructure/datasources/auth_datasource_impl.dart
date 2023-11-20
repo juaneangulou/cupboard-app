@@ -4,6 +4,8 @@ import 'package:my_cupboard_app/features/auth/domain/datasources/auth_datasource
 import 'package:my_cupboard_app/features/auth/domain/entities/user.dart';
 import 'package:my_cupboard_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:my_cupboard_app/features/auth/infrastructure/infrastructure.dart';
+import 'package:my_cupboard_app/features/auth/infrastructure/mappers/user_info_mapper.dart';
+import 'package:my_cupboard_app/features/user/domain/entities/user-info.dart';
 
 class AuthDatasourceImpl extends AuthDatasources {
   final dio = Dio(BaseOptions(baseUrl: Environment.apiUrl));
@@ -44,6 +46,31 @@ class AuthDatasourceImpl extends AuthDatasources {
       ));
       final responseFull = (await response).data;
       final user = UserMapper.userJsonToEntity(responseFull);
+      return user;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw CustomError(
+            e.response?.data['message'] ?? 'Credenciales incorrectas');
+      }
+      if (e.type == DioExceptionType.connectionTimeout) {
+        throw CustomError('Revisar conexión a internet');
+      }
+      throw Exception();
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<UserInfo?> getUserInfoAuth(String token) async{
+    try {
+      final response = dio.get('/api/auth/user-info', options: Options(
+        headers: {
+          'Authorization': 'Bearer $token'
+        }
+      ));
+      final responseFull = (await response).data;
+      final user = UserInfoMapper.userJsonToEntity(responseFull);
       return user;
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {

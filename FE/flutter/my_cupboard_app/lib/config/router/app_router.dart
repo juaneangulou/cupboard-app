@@ -6,6 +6,7 @@ import 'package:my_cupboard_app/features/auth/presentation/providers/auth_provid
 import 'package:my_cupboard_app/features/auth/presentation/screens/check_auth_status_screen.dart';
 import 'package:my_cupboard_app/features/auth/presentation/screens/login_screens.dart';
 import 'package:my_cupboard_app/features/auth/presentation/screens/register_screen.dart';
+import 'package:my_cupboard_app/features/dependent/screens/dependent_view_screen.dart';
 import 'package:my_cupboard_app/features/products/screens/product_dasboard_screen.dart';
 
 final goRouterProvider = Provider((ref) {
@@ -29,11 +30,15 @@ final goRouterProvider = Provider((ref) {
         path: '/register',
         builder: (context, state) => const RegisterScreen(),
       ),
+      GoRoute(
+        path: '/dependents-view',
+        builder: (context, state) =>  DependentsListScreen(),
+      ),
 
       ///* Product Routes
       GoRoute(
         path: '/',
-        builder: (context, state) => const ProductDashboardScreen(),
+        builder: (context, state) =>  ProductDashboardScreen(),
       ),
     ],
     redirect: (context, state) {

@@ -18,7 +18,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'Cupboard App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrangeAccent),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
